@@ -8,18 +8,8 @@ import (
 )
 
 func GetMonthlyTaxes(dni string) string {
-	// call public api
-	// https://api.sunat.cloud/ruc/{dni}
-	apiUrl := "https://api.sunat.cloud/ruc/" + dni
-	req, _ := http.NewRequest("GET", apiUrl, nil)
-	if req != nil {
-		fmt.Println("Error al llamar a la API")
-		return "Error al llamar a la API"
-	}
-	fmt.Println(req)
-	return "OK"
+	return dni
 }
-
 
 func GetDNI(w http.ResponseWriter, r *http.Request) {
 	// Parse the DNI parameter from the URL
