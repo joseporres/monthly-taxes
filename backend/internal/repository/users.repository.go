@@ -36,6 +36,6 @@ func (r *repo) GetUserByEmail(ctx context.Context, email string) (*entity.User, 
 	return u, nil
 }
 
-func GetMonthlyTaxes(ctx context.Context, year int, month int) ([]entity.Tax, error) {
+func (r *repo) GetMonthlyTaxes(ctx context.Context, dni string) ([]entity.Tax, error) {
 	panic("not implemented")
 }

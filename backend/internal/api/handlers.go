@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -82,5 +83,7 @@ func (a *API) LoginUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{"success": "true"})
 }
 
-func (a *API) GetMonthlyTaxes(c echo.Context) {
+func (a *API) GetMonthlyTaxes(c echo.Context) error {
+	fmt.Println("GetMonthlyTaxes")
+	return nil
 }
