@@ -17,6 +17,7 @@ type responseMessage struct {
 }
 
 func (a *API) RegisterUser(c echo.Context) error {
+	fmt.Print("RegisterUser")
 	ctx := c.Request().Context()
 	params := dtos.RegisterUser{}
 
@@ -39,7 +40,9 @@ func (a *API) RegisterUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, responseMessage{Message: "Internal server error"})
 	}
 
-	return c.JSON(http.StatusCreated, nil)
+	response := map[string]string{"message": "Usuario creado"}
+
+	return c.JSON(http.StatusCreated, response)
 }
 
 func (a *API) LoginUser(c echo.Context) error {
@@ -70,20 +73,28 @@ func (a *API) LoginUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, responseMessage{Message: "Internal server error"})
 	}
 
-	cookie := &http.Cookie{
-		Name:     "Authorization",
-		Value:    token,
-		Secure:   true,
-		SameSite: http.SameSiteNoneMode,
-		HttpOnly: true,
-		Path:     "/",
-	}
+	// cookie := &http.Cookie{
+	// 	Name:     "Authorization",
+	// 	Value:    token,
+	// 	Secure:   true,
+	// 	SameSite: http.SameSiteNoneMode,
+	// 	HttpOnly: true,
+	// 	Path:     "/",
+	// }
 
-	c.SetCookie(cookie)
-	return c.JSON(http.StatusOK, map[string]string{"success": "true"})
+	// c.SetCookie(cookie)
+	return c.JSON(http.StatusOK, map[string]string{"success": "true", "token": token})
 }
 
 func (a *API) GetMonthlyTaxes(c echo.Context) error {
-	fmt.Println("GetMonthlyTaxes")
-	return nil
+	//get dni from /monthly-taxes/{dni}
+	//call service
+	dni := c.Param("dni")
+	ctx := c.Request().Context()
+	response, err := a.serv.GetMonthlyTaxes(ctx, dni)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responseMessage{Message: "Internal server error"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"success": "true", "response": response})
 }

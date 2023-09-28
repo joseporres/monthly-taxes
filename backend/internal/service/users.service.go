@@ -58,6 +58,11 @@ func (s *serv) LoginUser(ctx context.Context, email, password string) (*models.U
 	}, nil
 }
 
-func (s *serv) GetMonthlyTaxes(ctx context.Context, dni string) ([]*models.Tax, error) {
-	return nil, nil
+func (s *serv) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) {
+
+	response, err := s.repo.GetMonthlyTaxes(ctx, dni)
+	if err != nil {
+		return "", err
+	}
+	return response, nil
 }

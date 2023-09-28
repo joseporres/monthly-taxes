@@ -1,12 +1,31 @@
 version: '3.7'
 services:
-  mysql:
-    image: mysql:latest
+  db:
+    image: mysql:8
     container_name: max_inventory_mysql
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: max_inventory
+    tty: true
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_monthly-taxes:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - monthly-taxes
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+    networks:
+      - monthly-taxes
+    depends_on:
+      - db
+
+networks:
+  monthly-taxes:
+    driver: bridge
+volumes:
+  db_monthly-taxes:
+    driver: local

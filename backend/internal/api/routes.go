@@ -1,11 +1,18 @@
 package api
 
-import echo "github.com/labstack/echo/v4"
+import (
+	echo "github.com/labstack/echo/v4"
+
+	"backend/internal/middleware"
+)
 
 func (a *API) RegisterRoutes(e *echo.Echo) {
 
+	auth := e.Group("/auth")
+	auth.POST("/register", a.RegisterUser)
+	auth.POST("/login", a.LoginUser)
+
 	users := e.Group("/users")
-	users.POST("/register", a.RegisterUser)
-	users.POST("/login", a.LoginUser)
-	users.GET("/monthly-expenses/{dni}", a.GetMonthlyTaxes)
+	users.Use(middleware.AuthenticationMiddleware)
+	users.GET("/monthly-expenses/:dni", a.GetMonthlyTaxes)
 }
