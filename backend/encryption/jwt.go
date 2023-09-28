@@ -64,7 +64,9 @@ func ParseLoginJWT(value string) (jwt.MapClaims, error) {
 	return token.Claims.(jwt.MapClaims), nil
 }
 
-func Logout(token string) {
+func Logout(e echo.HandlerFunc) {
 	// Revoke the token associated with the session
-	RevokeToken(token)
+	tokenString := c.Request().Header.Get("Authorization")
+	RevokeToken(tokenString)
+	return c.JSON(http.StatusOK, responseMessage{Message: "Logout successful"})
 }
