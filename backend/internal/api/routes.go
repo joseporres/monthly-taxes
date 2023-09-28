@@ -1,10 +1,9 @@
 package api
 
 import (
-	echo "github.com/labstack/echo/v4"
-
 	"backend/internal/middleware"
-	"backend/encryption/jwt"
+
+	echo "github.com/labstack/echo/v4"
 )
 
 func (a *API) RegisterRoutes(e *echo.Echo) {
@@ -12,7 +11,7 @@ func (a *API) RegisterRoutes(e *echo.Echo) {
 	auth := e.Group("/auth")
 	auth.POST("/register", a.RegisterUser)
 	auth.POST("/login", a.LoginUser)
-	auth.POST("/logout", jwt.LogoutUser)
+	auth.POST("/logout", a.Logout)
 
 	users := e.Group("/users")
 	users.Use(middleware.AuthenticationMiddleware)

@@ -64,6 +64,9 @@ func (a *API) LoginUser(c echo.Context) error {
 	u, err := a.serv.LoginUser(ctx, params.Email, params.Password)
 	if err != nil {
 		log.Println(err)
+		if err == service.ErrInvalidCredentials {
+			return c.JSON(http.StatusUnauthorized, responseMessage{Message: "Invalid credentials"})
+		}
 		return c.JSON(http.StatusInternalServerError, responseMessage{Message: "Internal server error"})
 	}
 
@@ -92,6 +95,17 @@ func (a *API) GetMonthlyTaxes(c echo.Context) error {
 	dni := c.Param("dni")
 	ctx := c.Request().Context()
 	response, err := a.serv.GetMonthlyTaxes(ctx, dni)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responseMessage{Message: "Internal server error"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"success": "true", "response": response})
+}
+
+func (a *API) Logout(c echo.Context) error {
+
+	tokenHeader := c.Request().Header.Get("Authorization")
+	response, err := a.serv.Logout(c.Request().Context(), tokenHeader)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responseMessage{Message: "Internal server error"})
 	}

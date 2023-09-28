@@ -26,7 +26,7 @@ func (a *API) Start(e *echo.Echo, address string) error {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{echo.POST, echo.GET},
-		AllowHeaders:     []string{echo.HeaderContentType},
+		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,
 	}))
 

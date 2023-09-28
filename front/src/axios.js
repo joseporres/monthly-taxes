@@ -1,4 +1,26 @@
-import axios from "axios";
+import axios from 'axios';
 
-axios.defaults.baseURL = "/api/"; // change this if you want to use a different url for APIs
-axios.defaults.headers.common['Authorization'] =  localStorage.getItem('token');
+
+const instance = axios.create({
+  baseURL: 'http://localhost:8080/', // Reemplaza con la URL de tu API
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
+
+instance.interceptors.request.use(
+  (config) => {
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default instance;

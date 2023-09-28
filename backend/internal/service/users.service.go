@@ -11,8 +11,6 @@ import (
 var (
 	ErrUserAlreadyExists  = errors.New("user already exists")
 	ErrInvalidCredentials = errors.New("invalid credentials")
-	ErrRoleAlreadyAdded   = errors.New("role was already added for this user")
-	ErrRoleNotFound       = errors.New("role not found")
 )
 
 func (s *serv) RegisterUser(ctx context.Context, email, name, password string) error {
@@ -65,4 +63,14 @@ func (s *serv) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) 
 		return "", err
 	}
 	return response, nil
+}
+
+func (s *serv) Logout(ctx context.Context, token string) (string, error) {
+
+	_, err := s.repo.Logout(ctx, token)
+	if err != nil {
+		return "", err
+	}
+	return "Logout", nil
+
 }
