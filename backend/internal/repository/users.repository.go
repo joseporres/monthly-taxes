@@ -2,12 +2,12 @@ package repository
 
 import (
 	"backend/encryption"
+	"backend/global"
 	"backend/internal/entity"
 	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 )
 
 const (
@@ -42,11 +42,8 @@ func (r *repo) GetUserByEmail(ctx context.Context, email string) (*entity.User, 
 
 func (r *repo) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) {
 
-	// config.LoadEnvFile()
-	token := os.Getenv("TOKEN")
-
 	// Construct the API request URL.
-	url := fmt.Sprintf("http://api.aciertaperu.com/app4/v2/reniec?dni=%s&token=%s", dni, token)
+	url := fmt.Sprintf("http://api.aciertaperu.com/app4/v2/reniec?dni=%s&token=%s", dni, global.TOKEN)
 
 	resp, err := http.Get(url)
 	if err != nil {

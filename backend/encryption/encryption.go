@@ -1,19 +1,19 @@
 package encryption
 
 import (
+	"backend/global"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
 	"io"
-	"os"
 )
 
 // const key=
 
 func Encrypt(plaintext []byte) ([]byte, error) {
-	c, err := aes.NewCipher([]byte(os.Getenv("KEY")))
+	c, err := aes.NewCipher([]byte(global.KEY))
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func Encrypt(plaintext []byte) ([]byte, error) {
 }
 
 func Decrypt(ciphertext []byte) ([]byte, error) {
-	c, err := aes.NewCipher([]byte(os.Getenv("KEY")))
+	c, err := aes.NewCipher([]byte(global.KEY))
 	if err != nil {
 		return nil, err
 	}

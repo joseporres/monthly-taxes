@@ -4,19 +4,21 @@ import (
 	"context"
 	"fmt"
 
+	"backend/config"
 	"backend/database"
+	"backend/global"
 	"backend/internal/api"
 	"backend/internal/repository"
 	"backend/internal/service"
 	"backend/settings"
-
-	"backend/config"
 
 	"github.com/labstack/echo/v4"
 	"go.uber.org/fx"
 )
 
 func main() {
+	config.LoadEnvFile()
+	fmt.Println(global.TOKEN)
 	app := fx.New(
 		fx.Provide(
 			context.Background,
@@ -33,7 +35,6 @@ func main() {
 		),
 	)
 
-	config.LoadEnvFile()
 	app.Run()
 }
 
