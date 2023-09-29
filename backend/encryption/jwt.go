@@ -3,6 +3,7 @@ package encryption
 import (
 	"backend/internal/models"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -25,7 +26,7 @@ func SignedLoginToken(u *models.User) (string, error) {
 		"exp":   time.Now().Add(time.Hour * 2).Unix(),
 	})
 
-	return token.SignedString([]byte(key))
+	return token.SignedString([]byte(os.Getenv("KEY")))
 }
 
 func ParseLoginJWT(value string) (jwt.MapClaims, error) {
@@ -35,7 +36,7 @@ func ParseLoginJWT(value string) (jwt.MapClaims, error) {
 	}
 
 	token, err := jwt.Parse(value, func(token *jwt.Token) (interface{}, error) {
-		return []byte(key), nil
+		return []byte(os.Getenv("KEY")), nil
 	})
 
 	// Verifica tiempo exp

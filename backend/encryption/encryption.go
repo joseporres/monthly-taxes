@@ -7,12 +7,13 @@ import (
 	"encoding/base64"
 	"errors"
 	"io"
+	"os"
 )
 
-const key = "01234567890123456789012345678901"
+// const key=
 
 func Encrypt(plaintext []byte) ([]byte, error) {
-	c, err := aes.NewCipher([]byte(key))
+	c, err := aes.NewCipher([]byte(os.Getenv("KEY")))
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +32,7 @@ func Encrypt(plaintext []byte) ([]byte, error) {
 }
 
 func Decrypt(ciphertext []byte) ([]byte, error) {
-	c, err := aes.NewCipher([]byte(key))
+	c, err := aes.NewCipher([]byte(os.Getenv("KEY")))
 	if err != nil {
 		return nil, err
 	}

@@ -10,6 +10,8 @@ import (
 	"backend/internal/service"
 	"backend/settings"
 
+	"backend/config"
+
 	"github.com/labstack/echo/v4"
 	"go.uber.org/fx"
 )
@@ -31,6 +33,7 @@ func main() {
 		),
 	)
 
+	config.LoadEnvFile()
 	app.Run()
 }
 
