@@ -26,7 +26,7 @@ const (
 		where email = ?;`
 	qryInsertLog = `
 		insert into LOGS ( method, endpoint, status_code, execution_time, timestamp)	
-		values (?, ?, ?);`
+		values (?, ?, ?, ?, ?);`
 )
 
 func (r *repo) SaveUser(ctx context.Context, email, name, password string) error {
@@ -46,6 +46,7 @@ func (r *repo) GetUserByEmail(ctx context.Context, email string) (*entity.User, 
 
 func insertLog(ctx context.Context, method string, endpoint string, status_code int, execution_time float64, timestamp string, r *repo) error {
 	_, err := r.db.ExecContext(ctx, qryInsertLog, method, endpoint, status_code, execution_time, timestamp)
+	fmt.Println("Error 5 en el log: ", err)
 	return err
 }
 
@@ -64,6 +65,7 @@ func (r *repo) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) 
 		status_code = 500
 		end_time := time.Now()
 		execution_time := end_time.Sub(start_time).Seconds()
+		fmt.Println("Error 1: ", err)
 		err = insertLog(ctx, method, endpoint, status_code, execution_time, timestamp, r)
 		if err != nil {
 			return "", err
@@ -76,6 +78,7 @@ func (r *repo) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) 
 		status_code = resp.StatusCode
 		end_time := time.Now()
 		execution_time := end_time.Sub(start_time).Seconds()
+		fmt.Println("Error 2: ", err)
 		err = insertLog(ctx, method, endpoint, status_code, execution_time, timestamp, r)
 		if err != nil {
 			return "", err
@@ -88,6 +91,7 @@ func (r *repo) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) 
 		status_code = 500
 		end_time := time.Now()
 		execution_time := end_time.Sub(start_time).Seconds()
+		fmt.Println("Error 3: ", err)
 		err = insertLog(ctx, method, endpoint, status_code, execution_time, timestamp, r)
 		if err != nil {
 			return "", err
@@ -98,6 +102,7 @@ func (r *repo) GetMonthlyTaxes(ctx context.Context, dni string) (string, error) 
 	status_code = resp.StatusCode
 	end_time := time.Now()
 	execution_time := end_time.Sub(start_time).Seconds()
+	fmt.Println("Error 4: ", err)
 	err = insertLog(ctx, method, endpoint, status_code, execution_time, timestamp, r)
 	if err != nil {
 		return "", err
