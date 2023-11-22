@@ -37,7 +37,7 @@ async function login() {
 
   <div class="container" style="height: 100vh;">
     <h1 class="title-default">
-      Iniciar Sessión
+      Iniciar Sesión
     </h1>
     <div class="form-group">
       <input type="email" v-model="email"
